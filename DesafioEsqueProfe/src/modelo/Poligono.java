@@ -28,17 +28,22 @@ public abstract class Poligono implements Figura {
         this.lados = new double[puntos];
         this.punto = new Point[puntos];
     }
+    
+    public double calcularMagnitud(Point punto1,Point punto2){
+        double lado = Math.pow((punto2.x-punto1.x),2)+Math.pow((punto2.y-punto1.y),2);
+        return Math.sqrt(lado);
+    }
 
-    public double[] getLados() {
-        return lados;
+    public void setLados(Point[] punto) {//Guarda en un arreglo el tamanio de cada lado
+        int i = 1;
+        for (; i < punto.length; i++) {
+            this.lados[i-1]=calcularMagnitud(punto[i-1], punto[i]);
+        }
+        this.lados[i]=calcularMagnitud(punto[i], punto[0]);
     }
 
     public double getPerimetro() {
         return perimetro;
-    }
-
-    public void setPerimetro(double perimetro) {
-        this.perimetro = perimetro;
     }
 
     public double getArea() {
@@ -49,25 +54,25 @@ public abstract class Poligono implements Figura {
         this.area = area;
     }
 
-    public void setLados(double[] lado) {//Copia lado por valor REVISAR
-        this.lados = lado.clone();
+    public double[] getLados() {//Copia lado por valor REVISAR
+        return this.lados;
     }
 
     public Point[] getPunto() {
         return punto;
     }
 
-    public void setPunto(Point[] punto) {//Copia punto por valor REVISAR
-        this.punto = punto.clone();
+    public void setPunto(Point punto, int i) {//Copia punto por valor REVISAR
+        this.punto[i]=punto;
     }
 
-    public void calcularPerimetro() {
+    public void setPerimetro() {//Designa el perimetro de la figura sumando todos los lados
         for (int i = 0; i < this.lados.length; i++) {
             this.perimetro += this.lados[i];
         }
     }
 
-    public double calculoAreaTriangulo(int i1, int i2, int i3) {
+    public double calculoAreaTriangulo(int i1, int i2, int i3) {//Calcula area del sector segun la fórmula de heron
         double areaTriangulo;
         double semiPerimetro = semiPerimetroTriangulo(i1, i2, i3);//designamos el semiperimetro S
         areaTriangulo = (semiPerimetro - this.lados[i1]) * (semiPerimetro - this.lados[i2]) * (semiPerimetro - this.lados[i3]);
